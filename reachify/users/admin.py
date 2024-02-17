@@ -15,6 +15,10 @@ if settings.DJANGO_ADMIN_FORCE_ALLAUTH:
     # https://docs.allauth.org/en/latest/common/admin.html#admin
     admin.site.login = decorators.login_required(admin.site.login)  # type: ignore[method-assign]
 
+admin.site.site_header = 'Reachify Admin'
+admin.site.site_title = 'Welcome to Reachify Admin'
+admin.site.index_title = 'Reachify Admin'
+
 
 @admin.register(User)
 class UserAdmin(auth_admin.UserAdmin):
