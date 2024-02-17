@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from reachify.users.forms import UserAdminChangeForm
 from reachify.users.forms import UserAdminCreationForm
+from reachify.users.models import Member
 
 User = get_user_model()
 
@@ -43,3 +44,9 @@ class UserAdmin(auth_admin.UserAdmin):
     )
     list_display = ["username", "name", "is_superuser"]
     search_fields = ["name"]
+
+
+@admin.register(Member)
+class MemberAdmin(admin.ModelAdmin):
+    list_display = ["username", "user", "used_credit", "is_active", "created"]
+
