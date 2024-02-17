@@ -1,0 +1,8 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=reachify
+POSTGRES_USER=gUiosGcNDhagGNDVDRszGuHHDQRbGOzh
+POSTGRES_PASSWORD=XI3RV9JAJwXwbPHt5ghgqE0RYLr72HxJdMgqYm8gxpjSvLYA9T67I4CR25YDYQNT
+
