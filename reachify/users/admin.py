@@ -49,4 +49,4 @@ class UserAdmin(auth_admin.UserAdmin):
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
     list_display = ["username", "user", "used_credit", "is_active", "created"]
-
+    readonly_fields = ['created']
