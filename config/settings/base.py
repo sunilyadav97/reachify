@@ -84,7 +84,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "reachify.users",
-    # Your stuff: custom apps go here
+    "reachify.reachapp",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

@@ -66,14 +66,14 @@
               aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <a class="navbar-brand" href="{% url 'home' %}">Reachify</a>
+      <a class="navbar-brand" href="{% url 'reachapp:home' %}">Reachify</a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
+            <a class="nav-link" href="{% url 'reachapp:home' %}">Home <span class="visually-hidden">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'about' %}">About</a>
+            <a class="nav-link" href="{% url 'reachapp:about' %}">About</a>
           </li>
           {% if request.user.is_authenticated %}
             <li class="nav-item">
