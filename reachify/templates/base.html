@@ -16,13 +16,20 @@
         content="Sunil Yadav"/>
   <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}"/>
   {% block css %}
-    <!-- Latest compiled and minified Bootstrap CSS -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css"
-          integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer"/>
     <!-- Your stuff: Third-party CSS libraries go here -->
+    <!-- =========UNPOLY JS CDN========-->
+    <link rel="stylesheet" href="https://unpkg.com/unpoly@2.7.2/unpoly.min.css">
+
+    <!-- ===========TABLER CSS============-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/tabler-min.css' %}">
+
+    <!--    =======BOX ICONS=====-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/boxicon.min.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- ========TABLER ICONS==========-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
     <!-- This file stores project-specific CSS -->
 
 
@@ -55,7 +62,7 @@
 </head>
 <body>
 <div class="mb-1">
-  <nav class="navbar navbar-expand-md navbar-light bg-light">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid">
       <button class="navbar-toggler navbar-toggler-right"
               type="button"
@@ -93,7 +100,12 @@
             {% endif %}
             <li class="nav-item">
               {# URL provided by django-allauth/account/urls.py #}
-              <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+              <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Login" %}</a>
+            </li>
+          {% endif %}
+          {% if request.session.member_username %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'reachapp:dashboard' %}">Dashboard</a>
             </li>
           {% endif %}
         </ul>
@@ -102,22 +114,42 @@
   </nav>
 </div>
 <div class="container">
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-dismissible {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-        {{ message }}
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {% endfor %}
-  {% endif %}
   {% block content %}
   {% endblock content %}
 </div>
 <!-- /container -->
 {% block modal %}
 {% endblock modal %}
+
+<footer class="mt-4">
+  <p class="py-3 mb-0 text-light text-center bg-dark fs-4">
+    &copy; Copyright 2024 Reachify | All Right Reserved.
+  </p>
+</footer>
+{% if messages %}
+  {% for message in messages %}
+    <div class="position-fixed top-0 mt-5  end-0" style="z-index: 999;" id="alert-box">
+      <div class="alert  alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        <strong class="d-flex align-items-center">
+          {% if message.tags == 'warning' %}
+            <i class="ti ti-alert-circle fs-1 pe-2"></i>
+          {% elif message.tags == 'info' %}
+            <i class="ti ti-info-circle fs-1 pe-2"></i>
+          {% elif message.tags == 'success' %}
+            <i class="ti ti-check fs-1 pe-2"></i>
+          {% endif %}
+          {{ message }}
+        </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}
+<!-- ========UNPOLY JS CDN=============-->
+<script src="https://unpkg.com/unpoly@2.7.2/unpoly.min.js"></script>
+
+<!-- ========TABLER JS========-->
+<script type="text/javascript" src="{% static 'js/tabler.min.js' %}"></script>
 {% block inline_javascript %}
   {% comment %}
     Script tags with only code, no src (defer by default). To run
