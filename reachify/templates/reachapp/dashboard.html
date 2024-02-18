@@ -1,0 +1,15 @@
+{% extends "base.html" %} {% load crispy_forms_tags %}
+{% block content %}
+  <div class="row">
+  <div class="col-md-8">
+    <h1>Dashboard</h1>
+    <p>{{ member.username }}</p>
+    {% if account_data %}
+      <img src="{{ account_data.profile_image_url }}" alt="Profile Image">
+        <p>Name: {{ account_data.full_name }}</p>
+      <p>Followers: {{ account_data.followers_count }}</p>
+      <p>{{ account_data.content }}</p>
+    {% endif %}
+  </div>
+  </div>
+{% endblock %}
