@@ -15,8 +15,8 @@ class Platform(TimeStampedModel):
 
 class SocialProfile(TimeStampedModel):
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
-    platform = models.ForeignKey(Platform, on_delete=models.CASCADE)
     username = models.CharField(max_length=150, unique=True)
+    platform = models.ForeignKey(Platform, on_delete=models.SET_NULL, null=True)
     old_username = models.CharField(max_length=150, null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
