@@ -1,23 +1,61 @@
 {% extends "base.html" %} {% load crispy_forms_tags %}
 {% block content %}
-  <div class="row">
-    <div class="col-md-6 m-auto">
-      <h1 class="text-info fs-2 mb-5">Get free instagram followers and likes</h1>
-    </div>
-    <div class="w-100"></div>
-    <div class="col-md-6 m-auto">
-      <div class="card shadow">
-        <div class="card-header">
-          <h3 class="card-title fs-4">Enter your instagram username</h3>
-        </div>
-        <div class="card-body py-5">
-          <form action="" method="post">
+  {#  <div class="row py-5">#}
+  {#    <div class="col-md-6 m-auto">#}
+  {#      <div class="card shadow">#}
+  {#        <div class="card-header">#}
+  {#          <h1 class="card-title text-info fs-2">Get free instagram followers and likes</h1>#}
+  {#        </div>#}
+  {#        <div class="card-body py-5">#}
+  {#          <form action="" method="post">#}
+  {#            {% csrf_token %}#}
+  {#            <div class="mb-3">#}
+  {#              <label for="id_username" class="form-label">Enter your instagram username</label>#}
+  {#              <input type="text" class="form-control" name="username" value="{{ username }}" id="id_username">#}
+  {#            </div>#}
+  {#            <div class="d-grid">#}
+  {#              <input type="submit" value="Search Account" class="btn btn-success">#}
+  {#            </div>#}
+  {#          </form>#}
+  {#        </div>#}
+  {#      </div>#}
+  {#    </div>#}
+  {#  </div>#}
+{% endblock %}
+
+{% block modal %}
+  <div class="page page-center pt-0">
+    <div class="container pt-0">
+      <div class="row">
+        <div class="col-md-7 m-auto">
+          <form class="card shadow p-5 bg-light" action="" method="post">
             {% csrf_token %}
-            <div class="mb-3">
-              <input type="text" class="form-control" name="username" value="{{ username }}">
-            </div>
-            <div class="d-grid">
-              <input type="submit" value="Search Account" class="btn btn-success">
+            <div class="card-body">
+              <h1 class="card-title text-center mb-4 fs-1 d-flex justify-content-center align-content-center">
+                <i class="ti ti-brand-instagram text-instagram me-1"></i> 
+                <span>
+                  Grow Your Instagram Followers and Likes
+                  </span>
+                <i class="ti ti-heart-filled text-red"></i>
+              </h1> 
+              {% if request.session.member_username %}
+                <div class="mb-3">
+                  <label class="form-label" for="id_username">Your current instagram username</label>
+                  <input type="text" class="form-control py-3 fs-3" name="username" value="{{ request.session.member_username }}"
+                         id="id_username" placeholder="Instagram username">
+                </div>
+              {% else %}
+                <div class="mb-3">
+                  <label class="form-label" for="id_username">Enter your instagram username</label>
+                  <input type="text" class="form-control py-3 fs-3" name="username" value="{{ username }}" id="id_username"
+                         placeholder="Instagram username">
+                </div>
+              {% endif %}
+              <div class="form-footer">
+                <button type="submit" class="btn btn-green w-100">
+                  Search Account
+                </button>
+              </div>
             </div>
           </form>
         </div>
