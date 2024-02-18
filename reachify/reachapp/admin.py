@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Platform, SocialProfile, Referral
+from reachify.reachapp.models import Platform, SocialProfile, Referral
 
 
 @admin.register(Platform)
