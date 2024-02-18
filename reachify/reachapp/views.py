@@ -31,7 +31,7 @@ class HomeView(TemplateView):
                     if insta_object:
                         member = Member.objects.create(username=username)
                         SocialProfile.objects.create(member=member, username=username, platform=insta_object)
-                        self.request.session['member_username'] = member
+                        self.request.session['member_username'] = member.username
                         messages.success(self.request, 'Success!')
                         return redirect('reachapp:dashboard')
                     else:
