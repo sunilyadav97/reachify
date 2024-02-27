@@ -1,5 +1,5 @@
 from django.contrib import admin
-from reachify.reachapp.models import Platform, SocialProfile, Referral, PlatformEngagementType
+from reachify.reachapp.models import Platform, SocialProfile, Referral, PlatformEngagementType, Promotion
 
 
 @admin.register(Platform)
@@ -17,6 +17,23 @@ class PlatformEngagementTypeAdmin(admin.ModelAdmin):
 @admin.register(SocialProfile)
 class SocialProfileAdmin(admin.ModelAdmin):
     list_display = ['member', 'platform', 'username', 'old_username', 'is_active', 'created']
+    readonly_fields = ['created']
+
+
+@admin.register(Promotion)
+class PromotionAdmin(admin.ModelAdmin):
+    list_display = [
+        'social_profile',
+        'engagement_type',
+        'target_followers_count',
+        'achieved_follower_count',
+        'credits_required',
+        'start_date',
+        'is_completed',
+        'is_active',
+        'created',
+    ]
+    list_filter = ['social_profile', 'engagement_type', 'is_completed', 'is_active']
     readonly_fields = ['created']
 
 
