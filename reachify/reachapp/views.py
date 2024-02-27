@@ -80,3 +80,12 @@ class DashboardView(FormView):
         account_data = get_instagram_account_data(self.member.username)
         ctx['account_data'] = account_data
         return ctx
+
+
+def platform_engagement_credits_view(request, id):
+    engagement_instance = PlatformEngagementType.objects.get(id=id)
+    data = {}
+    if engagement_instance:
+        data['credits'] = engagement_instance.credits
+    json_data = json.dumps(data)
+    return JsonResponse(json_data, safe=False)
