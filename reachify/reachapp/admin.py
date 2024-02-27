@@ -1,10 +1,16 @@
 from django.contrib import admin
-from reachify.reachapp.models import Platform, SocialProfile, Referral
+from reachify.reachapp.models import Platform, SocialProfile, Referral, PlatformEngagementType
 
 
 @admin.register(Platform)
 class PlatformAdmin(admin.ModelAdmin):
     list_display = ['name', 'link', 'is_active', 'created']
+    readonly_fields = ['created']
+
+
+@admin.register(PlatformEngagementType)
+class PlatformEngagementTypeAdmin(admin.ModelAdmin):
+    list_display = ['platform', 'engagement_type', 'is_active', 'created']
     readonly_fields = ['created']
 
 

@@ -13,6 +13,15 @@ class Platform(TimeStampedModel):
         return self.name
 
 
+class PlatformEngagementType(TimeStampedModel):
+    platform = models.ForeignKey("Platform", on_delete=models.CASCADE)
+    engagement_type = models.CharField(max_length=120)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.platform.name} {self.engagement_type}"
+
+
 class SocialProfile(TimeStampedModel):
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     username = models.CharField(max_length=150, unique=True)
