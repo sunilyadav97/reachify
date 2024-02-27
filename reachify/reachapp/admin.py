@@ -10,7 +10,7 @@ class PlatformAdmin(admin.ModelAdmin):
 
 @admin.register(PlatformEngagementType)
 class PlatformEngagementTypeAdmin(admin.ModelAdmin):
-    list_display = ['platform', 'engagement_type', 'is_active', 'created']
+    list_display = ['platform', 'engagement_type', 'credits', 'is_active', 'created']
     readonly_fields = ['created']
 
 

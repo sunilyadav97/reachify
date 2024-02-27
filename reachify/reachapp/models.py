@@ -16,6 +16,7 @@ class Platform(TimeStampedModel):
 class PlatformEngagementType(TimeStampedModel):
     platform = models.ForeignKey("Platform", on_delete=models.CASCADE)
     engagement_type = models.CharField(max_length=120)
+    credits = models.PositiveIntegerField(default=2)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
