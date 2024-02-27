@@ -120,9 +120,14 @@
     if (numberOfFollowersInput && selectPromotionType) {
 
       selectPromotionType.addEventListener('change', function () {
-        const selectedOption = selectPromotionType.options[selectPromotionType.selectedIndex];
         const numberOfFollowersLabel = document.querySelector(`label[for="${numberOfFollowersInput.id}"]`);
-        numberOfFollowersLabel.textContent = `Number of ${selectedOption.innerHTML}:`;
+        
+        if (selectPromotionType.selectedIndex !== 0) {
+          const selectedOption = selectPromotionType.options[selectPromotionType.selectedIndex];
+          numberOfFollowersLabel.textContent = `Number of ${selectedOption.innerHTML}*`;
+        } else {
+          numberOfFollowersLabel.textContent = `Number of followers*`;
+        }
       });
 
       numberOfFollowersInput.addEventListener('keyup', function (event) {
@@ -133,7 +138,7 @@
           creditsRequiredSpan.innerHTML = 0;
         }
       });
-      
+
     }
   </script>
 {% endblock %}
