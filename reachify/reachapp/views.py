@@ -1,11 +1,16 @@
-from django.shortcuts import render, redirect
+import json
+
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 import requests
 from bs4 import BeautifulSoup
 from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView
 
 from reachify.reachapp.api import is_valid_instagram, get_instagram_account_data
-from reachify.reachapp.models import SocialProfile
+from reachify.reachapp.forms import PromotionForm
+from reachify.reachapp.models import SocialProfile, PlatformEngagementType
 from reachify.reachapp.utils import get_instagram_platform
 from reachify.users.models import Member
 from django.contrib import messages
@@ -44,8 +49,21 @@ class HomeView(TemplateView):
         return render(request, self.template_name, {'username': username})
 
 
-class DashboardView(TemplateView):
+class DashboardView(FormView):
+    form_class = PromotionForm
     template_name = 'reachapp/dashboard.html'
+
+    def get_initial(self):
+        initials = super().get_initial()
+
+        try:
+            social_profile = SocialProfile.objects.get(member=self.member, is_active=True).member
+        except ObjectDoesNotExist:
+            social_profile = None
+
+        if social_profile:
+            initials['social_profile'] = social_profile
+        return initials
 
     def dispatch(self, request, *args, **kwargs):
         member_username = self.request.session.get('member_username')
