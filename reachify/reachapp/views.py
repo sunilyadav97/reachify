@@ -117,6 +117,7 @@ class AddPromotionView(FormView):
 
 
 def platform_engagement_credits_view(request, id):
+    """ API for getting platform engagement type credits"""
     engagement_instance = PlatformEngagementType.objects.get(id=id)
     data = {}
     if engagement_instance:
