@@ -1,0 +1,71 @@
+{% extends "base.html" %} {% load crispy_forms_tags %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-12 mt-3">
+      <div class="card shadow">
+        <div class="card-header">
+          {% include 'utils/dashboard_header.html' %}
+        </div>
+        <div class="card-body">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between">
+              <h3 class="card-title">Promotions</h3>
+              <a href="{% url 'reachapp:add_promotion' %}">Boost Profile</a>
+            </div>
+            <div id="table-default" class="table-responsive">
+              <table class="table card-table table-vcenter text-nowrap datatable">
+                <thead>
+                <tr>
+                  <th>
+                    <button class="table-sort" data-sort="sort-city">S.N.</button>
+                  </th>
+                  <th>
+                    <button class="table-sort" data-sort="sort-city">username</button>
+                  </th>
+                  <th>
+                    <button class="table-sort" data-sort="sort-name">Promotion Type</button>
+                  </th>
+                  <th>
+                    <button class="table-sort" data-sort="sort-city">Targeted Followers</button>
+                  </th>
+                  <th>
+                    <button class="table-sort" data-sort="sort-city">Achieved Followers</button>
+                  </th>
+                  <th>
+                    <button class="table-sort" data-sort="sort-city">Credit consumed</button>
+                  </th>
+                  <th>
+                    <button class="table-sort" data-sort="sort-city">Status</button>
+                  </th>
+                </tr>
+                </thead>
+                <tbody class="table-tbody" id="partner-list">
+                {% for object in object_list %}
+                  <tr>
+                    <td>{{ forloop.counter }}.</td>
+                    <td>{{ object.social_profile.username }}</td>
+                    <td>{{ object.engagement_type }}</td>
+                    <td>{{ object.target_followers_count }}</td>
+                    <td>{{ object.achieved_follower_count }}</td>
+                    <td>{{ object.credits_required }}</td>
+                    <td>
+                      {% if object.is_completed %}
+                        <span class="status status-green">Done</span>
+                      {% else %}
+                        <span class="status status-bitbucket">Running</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                    
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

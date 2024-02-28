@@ -7,10 +7,11 @@ import requests
 from bs4 import BeautifulSoup
 from django.urls import reverse_lazy
 from django.utils.datetime_safe import datetime
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView, TemplateView, ListView
 
 from reachify.reachapp.api import is_valid_instagram, get_instagram_account_data
 from reachify.reachapp.forms import PromotionForm
+from reachify.reachapp.mixins import MemberRequired
 from reachify.reachapp.models import SocialProfile, PlatformEngagementType, Promotion
 from reachify.reachapp.utils import get_instagram_platform
 from reachify.users.models import Member
@@ -124,3 +125,12 @@ def platform_engagement_credits_view(request, id):
         data['credits'] = engagement_instance.credits
     json_data = json.dumps(data)
     return JsonResponse(json_data, safe=False)
+
+
+class PromotionListView(MemberRequired, ListView):
+    model = Promotion
+    template_name = 'reachapp/promotion_list.html'
+
+    def get_queryset(self):
+        queryset = Promotion.objects.filter(social_profile=self.social_profile, is_active=True).order_by('-modified')
+        return queryset
