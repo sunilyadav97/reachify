@@ -1,0 +1,60 @@
+{% extends "base.html" %} {% load crispy_forms_tags %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-12 mt-3">
+      <div class="card shadow">
+        <div class="card-header d-flex justify-content-between">
+          <h3 class="card-title">Add Promotion <span class="btn btn-indigo">Your Available Credits: {{ member.get_available_credits }}</span></h3>
+          <span class="btn btn-purple">1 Follow = 2 Credit</span>
+        </div>
+        <div class="card-body">
+          <form action="" method="post" id="promotion-form">
+            {% csrf_token %}
+            <div id="div_id_engagement_type" class="mb-3">
+              <label for="member_id" class="form-label requiredField">
+                Your Instagram username<span class="asteriskField">*</span></label>
+              <input type="text" class="form-control disabled" id="member_id" value="{{ member.username }}">
+            </div>
+            {{ form|crispy }}
+          </form>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+          <span class="btn btn-yellow">Credits Required: <span id="credits_required">0</span></span>
+          <button class="btn btn-success" type="submit" form="promotion-form">Add Promotion</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block inline_javascript %}
+  <script>
+    let selectPromotionType = document.getElementById("id_engagement_type")
+    let numberOfFollowersInput = document.getElementById("id_target_followers_count");
+    let creditsRequiredSpan = document.getElementById("credits_required");
+
+    if (numberOfFollowersInput && selectPromotionType) {
+
+      selectPromotionType.addEventListener('change', function () {
+        const numberOfFollowersLabel = document.querySelector(`label[for="${numberOfFollowersInput.id}"]`);
+
+        if (selectPromotionType.selectedIndex !== 0) {
+          const selectedOption = selectPromotionType.options[selectPromotionType.selectedIndex];
+          numberOfFollowersLabel.textContent = `Number of ${selectedOption.innerHTML}*`;
+        } else {
+          numberOfFollowersLabel.textContent = `Number of followers*`;
+        }
+      });
+
+      numberOfFollowersInput.addEventListener('keyup', function (event) {
+        let credits = parseInt(event.target.value) * 2;
+        if (credits) {
+          creditsRequiredSpan.innerHTML = credits;
+        } else {
+          creditsRequiredSpan.innerHTML = 0;
+        }
+      });
+
+    }
+  </script>
+{% endblock %}

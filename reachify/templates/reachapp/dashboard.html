@@ -14,8 +14,7 @@
                  tabindex="-1">Earn Credits</a>
             </li>
             <li class="nav-item" role="presentation">
-              <a href="#tabs-activity-8" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab"
-                 tabindex="-1">Boost Profile</a>
+              <a href="{% url 'reachapp:add_promotion' %}" class="nav-link">Boost Profile</a>
             </li>
             <li class="nav-item" role="presentation">
               <a href="#tabs-activity-9" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab"
@@ -71,7 +70,7 @@
             <div class="tab-pane fade" id="tabs-activity-8" role="tabpanel">
               <div>
                 <div class="mb-2">
-                  <span class="btn btn-indigo">Your Credits: {{ member.earned_credit|floatformat:0 }}</span>
+                  <span class="btn btn-indigo">Your Credits: {{ member.get_available_credits }}</span>
                 </div>
                 <div class="card">
                   <div class="card-header d-flex justify-content-between">

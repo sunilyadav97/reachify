@@ -50,9 +50,30 @@ class HomeView(TemplateView):
         return render(request, self.template_name, {'username': username})
 
 
-class DashboardView(FormView):
-    form_class = PromotionForm
+class DashboardView(TemplateView):
     template_name = 'reachapp/dashboard.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        member_username = self.request.session.get('member_username')
+        if member_username:
+            self.member = Member.objects.get(username=member_username)
+            self.social_profile = SocialProfile.objects.get(member=self.member, is_active=True)
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            messages.info(self.request, 'Please add your Instagram!')
+            return redirect("reachapp:home")
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['member'] = self.member
+        account_data = get_instagram_account_data(self.member.username)
+        ctx['account_data'] = account_data
+        return ctx
+
+
+class AddPromotionView(FormView):
+    form_class = PromotionForm
+    template_name = "reachapp/promotion_form.html"
 
     def dispatch(self, request, *args, **kwargs):
         member_username = self.request.session.get('member_username')
@@ -67,23 +88,29 @@ class DashboardView(FormView):
     def form_valid(self, form):
         engagement_type = form.cleaned_data.get("engagement_type")
         target_followers_count = form.cleaned_data.get("target_followers_count")
-        instance = Promotion.objects.create(
-            social_profile=self.social_profile,
-            engagement_type=engagement_type,
-            target_followers_count=target_followers_count,
-        )
-        if instance:
-            instance.credits_required = int(instance.engagement_type.credits) * instance.target_followers_count
-            instance.start_date = datetime.now()
-            instance.save()
-        messages.success(self.request,'Your promotion has been successfully!')
-        return redirect("reachapp:dashboard")
+        credits_required = engagement_type.credits * target_followers_count
+
+        if credits_required <= self.member.get_available_credits:
+            instance = Promotion.objects.create(
+                social_profile=self.social_profile,
+                engagement_type=engagement_type,
+                credits_required=credits_required,
+                target_followers_count=target_followers_count,
+                start_date=datetime.now()
+            )
+            if instance:
+                self.member.used_credit += credits_required
+                self.member.save()
+            messages.success(self.request, 'Your promotion has been set successfully!')
+            return redirect("reachapp:dashboard")
+        else:
+            messages.warning(self.request, "You don't have sufficient credits! Please earn more credits.")
+            form.add_error('target_followers_count', "You don't have sufficient credits! Please earn more credits.")
+            return self.form_invalid(form)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['member'] = self.member
-        account_data = get_instagram_account_data(self.member.username)
-        ctx['account_data'] = account_data
         return ctx
 
 

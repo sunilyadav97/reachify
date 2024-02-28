@@ -1,6 +1,6 @@
 from django.urls import path
 from django.views.generic import TemplateView
-from reachify.reachapp.views import HomeView, DashboardView, platform_engagement_credits_view
+from reachify.reachapp.views import HomeView, DashboardView, platform_engagement_credits_view, AddPromotionView
 
 app_name = 'reachapp'
 
@@ -12,6 +12,7 @@ urlpatterns = [
         TemplateView.as_view(template_name="pages/about.html"),
         name="about",
     ),
+    path("add/promotion/", AddPromotionView.as_view(), name="add_promotion"),
     path(
         'get/platform-engagement/<int:id>/credtis',
         platform_engagement_credits_view,
