@@ -38,3 +38,8 @@ class Member(TimeStampedModel):
 
     def __str__(self):
         return self.username
+
+    @property
+    def get_available_credits(self) -> int:
+        total_credits = self.earned_credit + self.purchased_credit
+        return int(total_credits - self.used_credit)
