@@ -3,25 +3,34 @@
   <div class="row">
     <div class="col-md-12 mt-3">
       <div class="card shadow">
-        <div class="card-header d-flex justify-content-between">
-          <h3 class="card-title">Add Promotion <span
-            class="btn btn-indigo">Your Available Credits: {{ member.get_available_credits }}</span></h3>
-          <span class="btn btn-purple">1 Follow = 2 Credit</span>
+        <div class="card-header">
+          {% include 'utils/dashboard_header.html' %}
         </div>
         <div class="card-body">
-          <form action="" method="post" id="promotion-form">
-            {% csrf_token %}
-            <div id="div_id_engagement_type" class="mb-3">
-              <label for="member_id" class="form-label requiredField">
-                Your Instagram username<span class="asteriskField">*</span></label>
-              <input type="text" class="form-control" id="member_id" value="{{ member.username }}" readonly disabled>
+          <div class="card">
+            <div class="card-header d-flex justify-content-between">
+              <h3 class="card-title">Add Promotion <span
+                class="btn btn-indigo">Your Available Credits: {{ member.get_available_credits }}</span></h3>
+              <span class="btn btn-purple">1 Follow = 2 Credit</span>
             </div>
-            {{ form|crispy }}
-          </form>
-        </div>
-        <div class="card-footer d-flex justify-content-between">
-          <span class="btn btn-yellow">Credits Required: <span id="credits_required"> {{ credits_required }}</span></span>
-          <button class="btn btn-success" type="submit" form="promotion-form">Add Promotion</button>
+            <div class="card-body">
+              <form action="" method="post" id="promotion-form">
+                {% csrf_token %}
+                <div id="div_id_engagement_type" class="mb-3">
+                  <label for="member_id" class="form-label requiredField">
+                    Your Instagram username<span class="asteriskField">*</span></label>
+                  <input type="text" class="form-control" id="member_id" value="{{ member.username }}" readonly
+                         disabled>
+                </div>
+                {{ form|crispy }}
+              </form>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+          <span class="btn btn-yellow">Credits Required: <span
+            id="credits_required"> {{ credits_required }}</span></span>
+              <button class="btn btn-success" type="submit" form="promotion-form">Add Promotion</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
