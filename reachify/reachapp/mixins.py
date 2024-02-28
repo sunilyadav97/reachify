@@ -5,7 +5,7 @@ from reachify.reachapp.models import SocialProfile
 from reachify.users.models import Member
 
 
-class MemberRequired:
+class MemberRequiredMixin:
 
     def dispatch(self, request, *args, **kwargs):
         member_username = self.request.session.get('member_username')
