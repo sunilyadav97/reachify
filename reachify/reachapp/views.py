@@ -80,6 +80,7 @@ class AddPromotionView(FormView):
         if member_username:
             self.member = Member.objects.get(username=member_username)
             self.social_profile = SocialProfile.objects.get(member=self.member, is_active=True)
+            self.credits_required = 0
             return super().dispatch(request, *args, **kwargs)
         else:
             messages.info(self.request, 'Please add your Instagram!')
@@ -89,7 +90,7 @@ class AddPromotionView(FormView):
         engagement_type = form.cleaned_data.get("engagement_type")
         target_followers_count = form.cleaned_data.get("target_followers_count")
         credits_required = engagement_type.credits * target_followers_count
-
+        self.credits_required = credits_required
         if credits_required <= self.member.get_available_credits:
             instance = Promotion.objects.create(
                 social_profile=self.social_profile,
@@ -111,6 +112,7 @@ class AddPromotionView(FormView):
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['member'] = self.member
+        ctx['credits_required'] = self.credits_required
         return ctx
 
 
