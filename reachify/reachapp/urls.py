@@ -14,7 +14,7 @@ urlpatterns = [
     ),
     path("add/promotion/", AddPromotionView.as_view(), name="add_promotion"),
     path(
-        'get/platform-engagement/<int:id>/credtis',
+        'fetch/platform-engagement/<int:id>/credtis',
         platform_engagement_credits_view,
         name="platform_engagement_credits"
     ),
