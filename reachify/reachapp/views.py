@@ -6,11 +6,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 import requests
 from bs4 import BeautifulSoup
 from django.urls import reverse_lazy
+from django.utils.datetime_safe import datetime
 from django.views.generic import FormView, TemplateView
 
 from reachify.reachapp.api import is_valid_instagram, get_instagram_account_data
 from reachify.reachapp.forms import PromotionForm
-from reachify.reachapp.models import SocialProfile, PlatformEngagementType
+from reachify.reachapp.models import SocialProfile, PlatformEngagementType, Promotion
 from reachify.reachapp.utils import get_instagram_platform
 from reachify.users.models import Member
 from django.contrib import messages
@@ -53,26 +54,30 @@ class DashboardView(FormView):
     form_class = PromotionForm
     template_name = 'reachapp/dashboard.html'
 
-    def get_initial(self):
-        initials = super().get_initial()
-
-        try:
-            social_profile = SocialProfile.objects.get(member=self.member, is_active=True).member
-        except ObjectDoesNotExist:
-            social_profile = None
-
-        if social_profile:
-            initials['social_profile'] = social_profile
-        return initials
-
     def dispatch(self, request, *args, **kwargs):
         member_username = self.request.session.get('member_username')
         if member_username:
             self.member = Member.objects.get(username=member_username)
+            self.social_profile = SocialProfile.objects.get(member=self.member, is_active=True)
             return super().dispatch(request, *args, **kwargs)
         else:
             messages.info(self.request, 'Please add your Instagram!')
             return redirect("reachapp:home")
+
+    def form_valid(self, form):
+        engagement_type = form.cleaned_data.get("engagement_type")
+        target_followers_count = form.cleaned_data.get("target_followers_count")
+        instance = Promotion.objects.create(
+            social_profile=self.social_profile,
+            engagement_type=engagement_type,
+            target_followers_count=target_followers_count,
+        )
+        if instance:
+            instance.credits_required = int(instance.engagement_type.credits) * instance.target_followers_count
+            instance.start_date = datetime.now()
+            instance.save()
+        messages.success(self.request,'Your promotion has been successfully!')
+        return redirect("reachapp:dashboard")
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)

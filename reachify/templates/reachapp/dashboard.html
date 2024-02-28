@@ -17,6 +17,10 @@
               <a href="#tabs-activity-8" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab"
                  tabindex="-1">Boost Profile</a>
             </li>
+            <li class="nav-item" role="presentation">
+              <a href="#tabs-activity-9" class="nav-link" data-bs-toggle="tab" aria-selected="false" role="tab"
+                 tabindex="-1">Promotions</a>
+            </li>
           </ul>
         </div>
         <div class="card-body">
@@ -77,29 +81,36 @@
                   <div class="card-body">
                     <form action="" method="post" id="promotion-form">
                       {% csrf_token %}
-                      {#                      <div class="mb-3">#}
-                      {#                        <div class="form-label">Select Promotion Type</div>#}
-                      {#                        <select class="form-select">#}
-                      {#                          <option value="1">Instagram Followers</option>#}
-                      {#                          <option value="2">Instagram Like</option>#}
-                      {#                          <option value="3">Instagram Reel Like</option>#}
-                      {#                        </select>#}
-                      {#                      </div>#}
-                      {#                      <div class="mb-3">#}
-                      {#                        <label class="form-label">Your Instagram Username</label>#}
-                      {#                        <input type="text" class="form-control" value="{{ member.username }}" readonly>#}
-                      {#                      </div>#}
-                      {#                      <div class="mb-3">#}
-                      {#                        <label class="form-label">Number of followers</label>#}
-                      {#                        <input type="number" class="form-control" name="number_of_followers"#}
-                      {#                               placeholder="Number of followers">#}
-                      {#                      </div>#}
+                      <div id="div_id_engagement_type" class="mb-3">
+                        <label for="member_id" class="form-label requiredField">
+                        Your Instagram username<span class="asteriskField">*</span></label>
+                        <input type="text" class="form-control disabled" id="member_id" value="{{ member.username }}">
+                      </div>
                       {{ form|crispy }}
                     </form>
                   </div>
                   <div class="card-footer d-flex justify-content-between">
                     <span class="btn btn-yellow">Credits Required: <span id="credits_required">0</span></span>
                     <button class="btn btn-success" type="submit" form="promotion-form">Add Promotion</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="tabs-activity-9" role="tabpanel">
+              <div>
+                <div class="mb-2">
+                  <span class="btn btn-indigo">All Promotions</span>
+                </div>
+                <div class="card">
+                  <div class="card-header d-flex justify-content-between">
+                    <h3 class="card-title">Add Promotion</h3>
+                    <span class="btn btn-purple">1 Follow = 2 Credit</span>
+                  </div>
+                  <div class="card-body">
+
+                  </div>
+                  <div class="card-footer d-flex justify-content-between">
+
                   </div>
                 </div>
               </div>
@@ -121,7 +132,7 @@
 
       selectPromotionType.addEventListener('change', function () {
         const numberOfFollowersLabel = document.querySelector(`label[for="${numberOfFollowersInput.id}"]`);
-        
+
         if (selectPromotionType.selectedIndex !== 0) {
           const selectedOption = selectPromotionType.options[selectPromotionType.selectedIndex];
           numberOfFollowersLabel.textContent = `Number of ${selectedOption.innerHTML}*`;
