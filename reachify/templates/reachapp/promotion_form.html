@@ -95,12 +95,14 @@
     }
 
     function toggleLink() {
+      const linkLabel = document.querySelector(`label[for="id_link"]`);
       const selectedOption = selectPromotionType.options[selectPromotionType.selectedIndex];
       let promotionType = selectedOption.innerHTML;
       if (promotionType === 'Select Promotion Type' || promotionType === 'Instagram Followers') {
         postLinkDiv.classList.add("d-none")
       } else {
         postLinkDiv.classList.remove('d-none')
+        linkLabel.innerHTML = `${selectedOption.innerHTML} Link`
       }
     }
   </script>
