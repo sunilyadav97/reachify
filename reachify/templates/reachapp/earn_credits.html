@@ -7,16 +7,89 @@
         <div class="card-header">
           {% include 'utils/dashboard_header.html' %}
         </div>
-        <div class="card-body">
+        <div class="card-body p-0">
           <div class="card">
             <div class="card-header d-flex justify-content-between">
-              <h3 class="card-title">Earn Credits</h3>
+              <h3 class="card-title">Your Credits : {{ member.get_available_credits|default:'0' }}</h3>
+              <div></div>
+            </div>
+            <div class="card-body p-0">
+              <div class="row gx-0">
+                <!-- Left Layout -->
+                <div class="col-md-8  border-bottom-wide border-dark">
+                  {% include 'utils/earn_credit_left_layout.html' %}
+                </div>
+                <!-- Right Layout -->
+                <div class="col-md-4 border-start-wide border-bottom-wide border-dark">
+                  <h2 class="bg-primary-subtle p-3 text-center text-uppercase">Steps to earn Credits</h2>
+                  <div class="p-3">
+                    <div class="bg-purple text-light p-3 mb-3">
+                      <h3>Step 1</h3>
+                      <p>Click on the Like / Follow button in the earn credits section.</p>
+                    </div>
+                    <div class="bg-purple text-light p-3 mb-3">
+                      <h3>Step 2</h3>
+                      <p>You will be redirected to instagram. Like / Follow the user.</p>
+                    </div>
+                    <div class="bg-purple text-light p-3 mb-3">
+                      <h3>Step 3</h3>
+                      <p>Then close the window and press the Verify button and credits will be added to your
+                        account.</p>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="card-body">
-              <h1>Hello World, earn credits here by following other people.</h1>
+              <div>
+                <h3 class="fw-semibold">Note</h3>
+                <div>
+                  <ol>
+                    <li>Please make sure that you have added profile picture on the account from which you are
+                      following
+                      others.
+                    </li>
+                    <li>Do not close the tab very fast after liking / following.</li>
+                    <li>We recommend you not to follow more than 30 users per hour, and not to like more than 100
+                      posts
+                      per hour.
+                    </li>
+                    <li>Do not use bots to like and follow otherwise your My Tools Town access will be restricted.
+                    </li>
+                  </ol>
+                </div>
+              </div>
+              <hr>
+              <div>
+                <h3 class="fw-semibold">Best way to Gain real followers on instagram</h3>
+                <div>
+                  <p>
+                    Our website can grow your instagram account with active ig followers and likes. We have made this
+                    best exchange platform for incrasing likes and followers on instagram. You can use our website and
+                    get thousands of likes and followers and grow your instagram account popularity. All you have to
+                    do
+                    is like and follow some other users, which will give you some credits. Then you can use this
+                    credits
+                    to grow your instagram account.
+                  </p>
+                  <p>
+                    Whenever you want to grow popularity of your instagram account, just click on the boost profile
+                    button and then you will be redirected to a page where you will be able to boost your likes and
+                    followers.
+                  </p>
+                  <p>
+                    After adding an promotion, If you think that the speed of getting followers or likes is slow, You
+                    can boost the speed of that promotion by spending some more credits. When you boost speed of your
+                    promotion, Your promotion will be completed faster than other promotions. My Tools Town is the
+                    best
+                    place to get instagram followers.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="card-footer d-flex justify-content-between">
-                    
+            <div class="card-footer d-flex justify-content-center">
+              <p class="text-primary">Reachify terms and services</p>
             </div>
           </div>
         </div>
