@@ -90,6 +90,7 @@ class AddPromotionView(FormView):
     def form_valid(self, form):
         engagement_type = form.cleaned_data.get("engagement_type")
         target_followers_count = form.cleaned_data.get("target_followers_count")
+        link = form.cleaned_data.get("link")
         credits_required = engagement_type.credits * target_followers_count
         self.credits_required = credits_required
         if credits_required <= self.member.get_available_credits:
@@ -100,6 +101,9 @@ class AddPromotionView(FormView):
                 target_followers_count=target_followers_count,
                 start_date=datetime.now()
             )
+            if instance and link:
+                instance.link = link
+                instance.save()
             if instance:
                 self.member.used_credit += credits_required
                 self.member.save()

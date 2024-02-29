@@ -54,6 +54,7 @@
         } else {
           numberOfFollowersLabel.textContent = `Number of followers*`;
         }
+        toggleLink();
       });
 
       numberOfFollowersInput.addEventListener('keyup', function (event) {
@@ -86,6 +87,21 @@
         .catch(error => {
           console.error('There was a problem with the fetch operation:', error);
         });
+    }
+
+    const postLinkDiv = document.getElementById("div_id_link")
+    if (postLinkDiv) {
+      toggleLink()
+    }
+
+    function toggleLink() {
+      const selectedOption = selectPromotionType.options[selectPromotionType.selectedIndex];
+      let promotionType = selectedOption.innerHTML;
+      if (promotionType === 'Select Promotion Type' || promotionType === 'Instagram Followers') {
+        postLinkDiv.classList.add("d-none")
+      } else {
+        postLinkDiv.classList.remove('d-none')
+      }
     }
   </script>
 {% endblock %}
