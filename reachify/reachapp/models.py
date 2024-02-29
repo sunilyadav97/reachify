@@ -37,6 +37,7 @@ class SocialProfile(TimeStampedModel):
 class Promotion(TimeStampedModel):
     social_profile = models.ForeignKey("SocialProfile", on_delete=models.CASCADE)
     engagement_type = models.ForeignKey("PlatformEngagementType", null=True, on_delete=models.SET_NULL)
+    link = models.URLField(null=True, blank=True, help_text="link of post")
     target_followers_count = models.PositiveIntegerField()  # Number of followers member wants
     achieved_follower_count = models.PositiveIntegerField(default=0)  # Number of followers member has achieved
     credits_required = models.PositiveIntegerField(default=0)  # Credits required for this promotion
