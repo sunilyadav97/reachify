@@ -13,6 +13,16 @@ urlpatterns = [
         TemplateView.as_view(template_name="pages/about.html"),
         name="about",
     ),
+    path(
+        "terms-of-service/",
+        TemplateView.as_view(template_name="pages/terms_of_services.html"),
+        name="terms_of_service"
+    ),
+    path(
+        "privacy-policy/",
+        TemplateView.as_view(template_name="pages/privacy_policy.html"),
+        name="privacy_policy"
+    ),
     path("add/promotion/", AddPromotionView.as_view(), name="add_promotion"),
     path('promotions/', PromotionListView.as_view(), name="promotion_list"),
     path('earn/credits/', EarnCreditView.as_view(), name="earn_credits"),
