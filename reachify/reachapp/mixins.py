@@ -17,3 +17,8 @@ class MemberRequiredMixin:
         else:
             messages.info(self.request, 'Please add your Instagram!')
             return redirect("reachapp:home")
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['member'] = self.member
+        return ctx
