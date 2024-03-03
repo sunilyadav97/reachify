@@ -10,8 +10,11 @@
         <div class="card-body p-0">
           <div class="card">
             <div class="card-header d-flex justify-content-between">
-              <h3 class="card-title">Your Credits : {{ member.get_available_credits|default:'0' }}</h3>
-              <div></div>
+              <h3 class="card-title">
+                <span class="bg-indigo p-2 rounded text-light">
+                  Your Credits : {{ member.get_available_credits|default:'0' }}
+              </span>
+              </h3>
             </div>
             <div class="card-body p-0">
               <div class="row gx-0">
@@ -89,7 +92,8 @@
               </div>
             </div>
             <div class="card-footer d-flex justify-content-center">
-              <p class="text-dark">Reachify <a href="{% url 'reachapp:terms_of_service' %}" target="_blank">terms and services</a></p>
+              <p class="text-dark">Reachify <a href="{% url 'reachapp:terms_of_service' %}" target="_blank">Terms of
+                services</a></p>
             </div>
           </div>
         </div>
