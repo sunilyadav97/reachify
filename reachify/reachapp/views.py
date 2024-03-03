@@ -161,4 +161,5 @@ class EarnCreditView(MemberRequiredMixin, TemplateView):
 
         print("social profile", promotion_pool)
         ctx['promotion'] = promotion_pool.order_by('?').first()
+        ctx['follow'] = "Followers"
         return ctx
