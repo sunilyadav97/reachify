@@ -50,6 +50,14 @@ class Promotion(TimeStampedModel):
         return f"{self.social_profile.member.username} - {self.target_followers_count}"
 
 
+class PromotionInteraction(TimeStampedModel):
+    promoter = models.ForeignKey("SocialProfile", related_name='interactions_given', on_delete=models.CASCADE)
+    promotion = models.ForeignKey("Promotion", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('promoter', 'promotion')
+
+
 class Referral(TimeStampedModel):
     member = models.ForeignKey(Member, on_delete=models.CASCADE)
     code = models.CharField(max_length=80, unique=True)

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from reachify.reachapp.models import Platform, SocialProfile, Referral, PlatformEngagementType, Promotion
+from reachify.reachapp.models import Platform, SocialProfile, Referral, PlatformEngagementType, Promotion, \
+    PromotionInteraction
 
 
 @admin.register(Platform)
@@ -34,6 +35,18 @@ class PromotionAdmin(admin.ModelAdmin):
         'created',
     ]
     list_filter = ['social_profile', 'engagement_type', 'is_completed', 'is_active']
+    readonly_fields = ['created']
+
+
+@admin.register(PromotionInteraction)
+class PromotionInteractionAdmin(admin.ModelAdmin):
+    list_display = [
+        'promoter',
+        'promotion',
+        'created',
+        'modified'
+    ]
+    search_fields = ['promoter', 'promotion']
     readonly_fields = ['created']
 
 
