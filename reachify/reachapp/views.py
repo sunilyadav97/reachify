@@ -138,6 +138,7 @@ def platform_engagement_credits_view(request, id):
 class PromotionListView(MemberRequiredMixin, ListView):
     model = Promotion
     template_name = 'reachapp/promotion_list.html'
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = Promotion.objects.filter(social_profile=self.social_profile, is_active=True).order_by('-modified')
