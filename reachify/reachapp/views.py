@@ -36,10 +36,13 @@ class HomeView(TemplateView):
                 if is_valid:
                     insta_object = get_instagram_platform()
                     if insta_object:
-                        member = Member.objects.create(username=username)
+                        member = Member.objects.create(username=username, earned_credit=5)
                         SocialProfile.objects.create(member=member, username=username, platform=insta_object)
                         self.request.session['member_username'] = member.username
-                        messages.success(self.request, 'Success!')
+                        messages.success(
+                            self.request,
+                            "Congratulations! You've earned 5 complimentary registration credits"
+                        )
                         return redirect('reachapp:dashboard')
                     else:
                         messages.warning(self.request, "please try after some time due to technical issue!")
