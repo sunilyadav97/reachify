@@ -111,7 +111,7 @@ class AddPromotionView(FormView):
                 self.member.used_credit += credits_required
                 self.member.save()
             messages.success(self.request, 'Your promotion has been set successfully!')
-            return redirect("reachapp:dashboard")
+            return redirect("reachapp:promotion_list")
         else:
             messages.warning(self.request, "You don't have sufficient credits! Please earn more credits.")
             form.add_error('target_followers_count', "You don't have sufficient credits! Please earn more credits.")
