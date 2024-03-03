@@ -1,6 +1,7 @@
 import json
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Exists, OuterRef, Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 import requests
@@ -12,7 +13,7 @@ from django.views.generic import FormView, TemplateView, ListView
 from reachify.reachapp.api import is_valid_instagram, get_instagram_account_data
 from reachify.reachapp.forms import PromotionForm
 from reachify.reachapp.mixins import MemberRequiredMixin
-from reachify.reachapp.models import SocialProfile, PlatformEngagementType, Promotion
+from reachify.reachapp.models import SocialProfile, PlatformEngagementType, Promotion, PromotionInteraction
 from reachify.reachapp.utils import get_instagram_platform
 from reachify.users.models import Member
 from django.contrib import messages
@@ -145,3 +146,19 @@ class PromotionListView(MemberRequiredMixin, ListView):
 
 class EarnCreditView(MemberRequiredMixin, TemplateView):
     template_name = "reachapp/earn_credits.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        promotion_pool = Promotion.objects.filter(
+            social_profile__platform=self.social_profile.platform,
+            is_completed=False, is_active=True,
+        ).exclude(social_profile=self.social_profile).annotate(
+            has_interaction=Exists(PromotionInteraction.objects.filter(
+                promotion=OuterRef('pk'),
+                promoter=self.social_profile
+            ))
+        ).filter(has_interaction=False)
+
+        print("social profile", promotion_pool)
+        ctx['promotion'] = promotion_pool.order_by('?').first()
+        return ctx
