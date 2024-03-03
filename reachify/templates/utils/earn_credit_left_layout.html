@@ -1,11 +1,27 @@
 <h2 class="text-center bg-yellow-lt p-3">EARN CREDITS</h2>
 <div class="text-center p-3 d-flex justify-content-center mt-4 align-content-center">
   <div>
-    <p>
-      <span>Like</span> the post from <span>thesunnil</span> to earn <span>1</span> Credits.
-    </p>
-    <div class="d-flex justify-content-center">
-      <a href="#" class="btn btn-instagram me-2">Like</a>
+    <div class="mb-3">
+      {% if promotion.engagement_type.engagement_type ==  follow %}
+        <p class="h3 bg-indigo-lt shadow shadow-sm p-3 rounded">
+          <span class="fw-bold me-1 text-dark">Follow</span>
+          <span class="text-google">{{ promotion.social_profile.username }}</span>
+          <span class="text-dark">to earn {{ promotion.engagement_type.credits }} Credits.</span>
+        </p>
+      {% else %}
+        <p class="h3 bg-indigo-lt shadow shadow-sm p-3 rounded">
+          <span class="fw-bold me-1 text-dark">Like</span>
+          <span class="text-google">the post from {{ promotion.social_profile.username }}</span>
+          <span class="text-dark">to earn {{ promotion.engagement_type.credits }} Credits.</span>
+        </p>
+      {% endif %}
+    </div>
+    <div class="d-flex justify-content-center mt-2">
+      {% if promotion.engagement_type.engagement_type == follow %}
+      <a href="{{ promotion.social_profile.username }}" class="btn btn-instagram me-2" id="instagramLink">Follow</a>
+        {% else %}
+        <a href="{{ promotion.social_profile.username }}" class="btn btn-instagram me-2" id="instagramLink">Like</a>
+      {% endif %}
       <a href="#" class="btn btn-green">Verify & Next Promotion</a>
     </div>
   </div>
