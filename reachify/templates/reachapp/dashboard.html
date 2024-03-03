@@ -32,7 +32,7 @@
                   </div>
                   <div class="card-footer">
                   <span class="btn btn-indigo"> Your Credits:
-                          {{ member.earned_credit|floatformat:0 }}
+                          {{ member.get_available_credits|floatformat:0 }}
                         </span>
                   </div>
                 </div>
