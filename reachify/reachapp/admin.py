@@ -33,6 +33,7 @@ class PromotionAdmin(admin.ModelAdmin):
         'is_completed',
         'is_active',
         'created',
+        'id',
     ]
     list_filter = ['social_profile', 'engagement_type', 'is_completed', 'is_active']
     readonly_fields = ['created']
