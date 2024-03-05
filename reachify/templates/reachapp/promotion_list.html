@@ -2,7 +2,7 @@
 {% block content %}
   <div class="row">
     <div class="col-md-12 mt-3">
-      <div class="card shadow">
+      <div class="card shadow mb-1">
         <div class="card-header">
           {% include 'utils/dashboard_header.html' %}
         </div>
@@ -12,7 +12,7 @@
               <h3 class="card-title">Promotions</h3>
               <a href="{% url 'reachapp:add_promotion' %}">Boost Profile</a>
             </div>
-            <div id="table-default" class="table-responsive">
+            <div id="table-default" class="table-responsive" style="height: 55vh;">
               <table class="table card-table table-vcenter text-nowrap datatable">
                 <thead>
                 <tr>
