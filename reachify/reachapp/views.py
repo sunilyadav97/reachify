@@ -2,12 +2,13 @@ import json
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Exists, OuterRef, Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 import requests
 from bs4 import BeautifulSoup
 from django.urls import reverse_lazy
 from django.utils.datetime_safe import datetime
+from django.views import View
 from django.views.generic import FormView, TemplateView, ListView
 
 from reachify.reachapp.api import is_valid_instagram, get_instagram_account_data
@@ -160,7 +161,30 @@ class EarnCreditView(MemberRequiredMixin, TemplateView):
             ))
         ).filter(has_interaction=False)
 
-        print("social profile", promotion_pool)
         ctx['promotion'] = promotion_pool.order_by('?').first()
         ctx['follow'] = "Followers"
         return ctx
+
+
+class VerifyPromotionCreditView(MemberRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            promotion_id = data.get("promotion_id")
+            print(promotion_id)
+            promotion = Promotion.objects.get(pk=promotion_id)
+            promotion.achieved_follower_count += 1
+            promotion.save()
+            credits = promotion.engagement_type.credits
+            self.member.earned_credit += credits
+            self.member.save()
+            response_data = {'message': 'Data received successfully!'}
+
+            return JsonResponse(response_data, status=200)
+        except json.JSONDecodeError:
+            # Handle JSON decoding error
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+
+    def get(self, request, *args, **kwargs):
+        # Only POST method is allowed
+        return JsonResponse({'error': 'Method not allowed'}, status=405)

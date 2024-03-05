@@ -1,7 +1,7 @@
 from django.urls import path
 from django.views.generic import TemplateView
 from reachify.reachapp.views import HomeView, DashboardView, platform_engagement_credits_view, AddPromotionView, \
-    PromotionListView, EarnCreditView
+    PromotionListView, EarnCreditView, VerifyPromotionCreditView
 
 app_name = 'reachapp'
 
@@ -31,4 +31,5 @@ urlpatterns = [
         platform_engagement_credits_view,
         name="platform_engagement_credits"
     ),
+    path('promotion/verify/credit/', VerifyPromotionCreditView.as_view(), name="verify_promotion_credit"),
 ]
