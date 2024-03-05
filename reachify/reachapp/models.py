@@ -1,5 +1,12 @@
+from django.contrib import messages
+from django.core.exceptions import ValidationError, FieldError
 from django.db import models
+from django.db.models.functions import datetime
 from django_extensions.db.models import TimeStampedModel
+from django_lifecycle import hook, BEFORE_UPDATE, BEFORE_SAVE
+from django_lifecycle.conditions import WhenFieldHasChanged
+from django_lifecycle.mixins import LifecycleModelMixin
+from django.utils.datetime_safe import datetime
 
 from reachify.users.models import Member
 
@@ -34,7 +41,7 @@ class SocialProfile(TimeStampedModel):
         return f"{self.member.username} - {self.platform.name}"
 
 
-class Promotion(TimeStampedModel):
+class Promotion(LifecycleModelMixin, TimeStampedModel):
     social_profile = models.ForeignKey("SocialProfile", on_delete=models.CASCADE)
     engagement_type = models.ForeignKey("PlatformEngagementType", null=True, on_delete=models.SET_NULL)
     link = models.URLField(null=True, blank=True, help_text="link of post")
@@ -48,6 +55,16 @@ class Promotion(TimeStampedModel):
 
     def __str__(self):
         return f"{self.social_profile.member.username} - {self.target_followers_count}"
+
+    @hook(BEFORE_UPDATE, condition=WhenFieldHasChanged("achieved_follower_count", has_changed=True))
+    def track_achieved_follower_count(self):
+        """If achieved_follower_count is equal to target_followers_count then complete the promotion."""
+        if self.achieved_follower_count == self.target_followers_count:
+            self.is_completed = True
+            self.end_date = datetime.now()
+
+        if self.achieved_follower_count > self.target_followers_count:
+            raise FieldError('Achieved follower count can not greater then target followers count')
 
 
 class PromotionInteraction(TimeStampedModel):
