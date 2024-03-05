@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError, FieldError
 from django.db import models
 from django.db.models.functions import datetime
 from django_extensions.db.models import TimeStampedModel
-from django_lifecycle import hook, BEFORE_UPDATE, BEFORE_SAVE
+from django_lifecycle import hook, BEFORE_UPDATE, BEFORE_SAVE, AFTER_UPDATE, AFTER_DELETE
 from django_lifecycle.conditions import WhenFieldHasChanged
 from django_lifecycle.mixins import LifecycleModelMixin
 from django.utils.datetime_safe import datetime
@@ -65,6 +65,16 @@ class Promotion(LifecycleModelMixin, TimeStampedModel):
 
         if self.achieved_follower_count > self.target_followers_count:
             raise FieldError('Achieved follower count can not greater then target followers count')
+
+    @hook(AFTER_DELETE)
+    def update_social_profile_credits(self):
+        member = self.social_profile.member
+        if not self.is_completed and self.is_active:
+            if self.achieved_follower_count < self.target_followers_count:
+                due_followers_count = self.target_followers_count - self.achieved_follower_count
+                refund_credit = due_followers_count*self.engagement_type.credits
+                member.used_credit -= refund_credit
+                member.save()
 
 
 class PromotionInteraction(TimeStampedModel):
