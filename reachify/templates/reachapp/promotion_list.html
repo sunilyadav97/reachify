@@ -35,6 +35,9 @@
                     <button class="table-sort" data-sort="sort-city">Credit consumed</button>
                   </th>
                   <th>
+                    <button class="table-sort" data-sort="sort-city">Created At</button>
+                  </th>
+                  <th>
                     <button class="table-sort" data-sort="sort-city">Status</button>
                   </th>
                 </tr>
@@ -48,6 +51,7 @@
                     <td>{{ object.target_followers_count }}</td>
                     <td>{{ object.achieved_follower_count }}</td>
                     <td>{{ object.credits_required }}</td>
+                    <td>{{ object.created|date }}</td>
                     <td>
                       {% if object.is_completed %}
                         <span class="status status-green">Done</span>
