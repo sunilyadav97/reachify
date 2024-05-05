@@ -1,5 +1,5 @@
 <h2 class="text-center bg-yellow-lt p-3">EARN CREDITS</h2>
-  <div class="text-center p-3 d-flex justify-content-center mt-4 align-content-center">
+<div class="text-center p-3 d-flex justify-content-center mt-4 align-content-center">
   {% if promotion is not None %}
     <div>
       <div class="mb-3">
@@ -27,35 +27,34 @@
              class="btn btn-instagram me-2"
              id="instagramLink">Like</a>
         {% endif %}
-        <button class="btn btn-green" id="verify_promotion_id">Verify & Next Promotion</button>
+        <form action="{% url 'reachapp:verify_promotion_credit' %}" method="post">
+          {% csrf_token %}
+          <input type="hidden" hidden="hidden" value="{{ promotion.pk }}" name="promotion_id">
+          <button class="btn btn-green" type="submit">Verify & Next Promotion</button>
+        </form>
       </div>
     </div>
   {% else %}
-  <div class="px-3 text-start">
-    <p class="text-indigo fw-semibold">We currently do not have any ongoing promotions that would allow you to earn credits. <br> However, please stay
-      connected as we will be launching new promotions soon!</p>
-  </div>
-{% endif %}
-  </div>
+    <div class="px-3 text-start">
+      <p class="text-indigo fw-semibold">We currently do not have any ongoing promotions that would allow you to earn
+        credits. <br> However, please stay
+        connected as we will be launching new promotions soon!</p>
+    </div>
+  {% endif %}
+</div>
 <script>
   let baseURL = "https://www.instagram.com/";
 
   function openInstagramProfile(url) {
-    window.open(url, '_blank', 'width=1000,height=600,top=0,left=0');
+    return window.open(url, '_blank', 'width=1000,height=600,top=0,left=0');
   }
+
+  //let instagramWindow;
 
   function openLinkInWindow(url) {
-    openInstagramProfile(url);
-    // Track that the user clicked the link to open the profile
-    trackEvent('InstagramProfileClicked');
+    let instagramWindow = openInstagramProfile(url);
   }
 
-  // Function to simulate tracking an event (replace this with actual tracking code)
-  function trackEvent(eventName) {
-    // Simulated tracking code (replace this with your analytics or tracking service)
-    console.log('Tracking event: ' + eventName);
-    // Here you could send data to your analytics service
-  }
 
   async function postData(url, data) {
     const response = await fetch(url, {
