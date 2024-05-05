@@ -3,7 +3,7 @@ import json
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Exists, OuterRef, Q
 from django.http import JsonResponse, HttpResponseBadRequest
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 import requests
 from bs4 import BeautifulSoup
 from django.urls import reverse_lazy
@@ -169,18 +169,22 @@ class EarnCreditView(MemberRequiredMixin, TemplateView):
 class VerifyPromotionCreditView(MemberRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         try:
-            data = json.loads(request.body)
-            promotion_id = data.get("promotion_id")
-            print(promotion_id)
+            promotion_id = request.POST.get("promotion_id")
             promotion = Promotion.objects.get(pk=promotion_id)
             promotion.achieved_follower_count += 1
             promotion.save()
             credits = promotion.engagement_type.credits
             self.member.earned_credit += credits
             self.member.save()
-            response_data = {'message': 'Data received successfully!'}
-
-            return JsonResponse(response_data, status=200)
+            pi_instance = PromotionInteraction.objects.create(
+                promoter=self.member.socialprofile_set.first(),
+                promotion=promotion
+            )
+            if pi_instance:
+                messages.success(request, "Credit earned successfully")
+            else:
+                messages.warning(request, "Something went wrong!")
+            return redirect(reverse("reachapp:earn_credits"))
         except json.JSONDecodeError:
             # Handle JSON decoding error
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
